@@ -4,8 +4,9 @@ import { useFormData } from "../utils/contextProvider";
 const SalaryTable = () => {
   const { formData } = useFormData();
 
-  let result = 0;
+  let result;
   let inputValue = formData.amount;
+  if (Number.isNaN(inputValue)) inputValue = 0;
 
   let netInputValue = inputValue;
   if (formData.type === "gross") {
