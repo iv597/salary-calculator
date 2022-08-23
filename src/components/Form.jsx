@@ -4,8 +4,14 @@ import { useFormData } from "../utils/contextProvider";
 const Form = () => {
   const { formData, setFormData } = useFormData();
   return (
-    <div className="flex py-8 col-span-1">
-      <form className="w-full" onSubmit={(e) => e.preventDefault()}>
+    <div className="flex py-8">
+      <form
+        className="w-full"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setFormData((prev) => ({ ...prev, submitted: true }));
+        }}
+      >
         <div className="my-6">
           <label htmlFor="amount" className="text-gray-800 mb-4">
             Add your income
@@ -17,7 +23,10 @@ const Form = () => {
             name="amount"
             value={formData.amount}
             onChange={(e) => {
-              setFormData((prev) => ({ ...prev, amount: e.target.value }));
+              setFormData((prev) => ({
+                ...prev,
+                amount: parseFloat(e.target.value),
+              }));
             }}
             className="mt-1
             w-full
@@ -52,15 +61,14 @@ const Form = () => {
                   "
           >
             <option value="">Please select</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Montly</option>
-            <option value="yearly">Yearly</option>
+            <option value="monthly">Monthly</option>
+            <option value="annually">Annually</option>
           </select>
         </div>
         <div className="my-6 w-full">
           <div className="mb-2">What is the type of your income?</div>
-          <div className="flex">
-            <span className="mr-4 flex-1">
+          <div className="flex flex-col md:flex-row">
+            <span className="md:mr-4 mb-2 md:mb-0 flex-1">
               <input
                 type="radio"
                 checked={formData.type === "net"}
@@ -106,9 +114,6 @@ const Form = () => {
         </div>
         <button
           type="submit"
-          onClick={() => {
-            setFormData((prev) => ({ ...prev, submitted: true }));
-          }}
           className="py-2 text-white bg-teal-600/60 w-full font-semibold rounded-xl border border-teal-600/60 hover:bg-teal-600/80 cursor-pointer"
         >
           Submit
